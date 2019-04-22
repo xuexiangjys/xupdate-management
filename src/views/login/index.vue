@@ -4,7 +4,7 @@
       label-position="left">
 
       <div class="title-container">
-        <h3 class="title">版本更新后台管理系统</h3>
+        <h3 class="title">版本更新管理系统</h3>
       </div>
 
       <el-form-item prop="username">

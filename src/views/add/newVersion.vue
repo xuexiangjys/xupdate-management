@@ -73,7 +73,10 @@
       addVersionInfo(formName) {
         this.$refs[formName].validate(valid => {
           if (valid) {
-            alert("固件添加成功!");
+            this.$message({
+              type: "success",
+              message: "新版本添加成功!"
+            });
           } else {
             console.log("error submit!!");
             return false;
@@ -94,7 +97,7 @@
   .form_header {
     text-align: center;
     font-size: 25px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
   .app_form {

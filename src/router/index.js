@@ -30,8 +30,7 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
-export const constantRoutes = [
-  {
+export const constantRoutes = [{
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
@@ -51,7 +50,10 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '控制台', icon: 'dashboard' }
+      meta: {
+        title: '控制台',
+        icon: 'dashboard'
+      }
     }]
   },
 
@@ -60,19 +62,25 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/list/versions',
     name: 'List',
-    meta: { title: '数据管理', icon: 'example' },
-    children: [
-      {
+    meta: {
+      title: '数据管理',
+      icon: 'example'
+    },
+    children: [{
         path: 'versions',
         name: 'Versions',
         component: () => import('@/views/list/versions'),
-        meta: { title: '版本列表' }
+        meta: {
+          title: '版本列表'
+        }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'accounts',
+        name: 'Accounts',
+        component: () => import('@/views/list/accounts'),
+        meta: {
+          title: '账户列表',
+        }
       }
     ]
   },
@@ -82,29 +90,41 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/add/newVersion',
     name: 'Add',
-    meta: { title: '数据添加', icon: 'form' },
-    children: [
-      {
+    meta: {
+      title: '数据添加',
+      icon: 'form'
+    },
+    children: [{
         path: 'newVersion',
         name: 'NewVersion',
         component: () => import('@/views/add/newVersion'),
-        meta: { title: '增加新版本' }
+        meta: {
+          title: '添加新版本'
+        }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'newAccount',
+        name: 'NewAccount',
+        component: () => import('@/views/add/newAccount'),
+        meta: {
+          title: '添加新账户'
+        }
       }
     ]
   },
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
+  }
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({
+    y: 0
+  }),
   routes: constantRoutes
 })
 

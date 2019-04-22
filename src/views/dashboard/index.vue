@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <section class="data_section">
-      <header class="section_title">欢迎使用版本更新后台管理系统！</header>
+      <header class="section_title">欢迎使用版本更新管理系统！</header>
     </section>
     <div class="dashboard-text">当前用户: {{ name }}</div>
   </div>
