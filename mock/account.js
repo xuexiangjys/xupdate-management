@@ -8,7 +8,7 @@ const tokens = {
   }
 }
 
-const users = {
+const accounts = {
   'admin-token': {
     roles: ['admin'],
     introduction: 'I am a super administrator',
@@ -24,7 +24,7 @@ const users = {
 }
 
 export default [
-  // user login
+  // account login
   {
     url: '/account/login',
     type: 'post',
@@ -36,7 +36,7 @@ export default [
       if (!token) {
         return {
           code: 60204,
-          message: 'Account and password are incorrect.'
+          msg: 'Account and password are incorrect.'
         }
       }
 
@@ -47,19 +47,19 @@ export default [
     }
   },
 
-  // get user info
+  // get account info
   {
-    url: '/account/info\.*',
+    url: '/account/info',
     type: 'get',
     response: config => {
       const { token } = config.query
-      const info = users[token]
+      const info = accounts[token]
 
       // mock error
       if (!info) {
         return {
           code: 50008,
-          message: 'Login failed, unable to get user details.'
+          msg: 'Login failed, unable to get account details.'
         }
       }
 
@@ -70,7 +70,7 @@ export default [
     }
   },
 
-  // user logout
+  // account logout
   {
     url: '/account/logout',
     type: 'post',

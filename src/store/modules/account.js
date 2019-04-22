@@ -2,7 +2,7 @@ import {
   login,
   logout,
   getInfo
-} from '@/api/user'
+} from '@/api/account'
 import {
   getToken,
   setToken,
@@ -72,11 +72,11 @@ const actions = {
         }
 
         const {
-          name,
+          nick,
           avatar
         } = data
 
-        commit('SET_NAME', name)
+        commit('SET_NAME', nick)
         commit('SET_AVATAR', avatar)
         resolve(data)
       }).catch(error => {
@@ -87,11 +87,10 @@ const actions = {
 
   // account logout
   logout({
-    commit,
-    state
+    commit
   }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      logout().then(() => {
         commit('SET_TOKEN', '')
         removeToken()
         resetRouter()

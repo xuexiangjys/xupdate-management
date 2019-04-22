@@ -34,22 +34,22 @@
 
 <script>
   import {
-    validLoginName
+    validName
   } from '@/utils/validate'
 
   export default {
     name: 'Login',
     data() {
       const validateLoginName = (rule, value, callback) => {
-        if (!validLoginName(value)) {
-          callback(new Error('请输入正确的用户名！'))
+        if (!validName(value)) {
+          callback(new Error('用户名必须是4~16位字母数字或符号！'))
         } else {
           callback()
         }
       }
       const validatePassword = (rule, value, callback) => {
-        if (value.length < 6) {
-          callback(new Error('密码不能小于6位！'))
+        if (!validName(value)) {
+          callback(new Error('密码必须是4~16位字母数字或符号！'))
         } else {
           callback()
         }
