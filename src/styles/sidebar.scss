@@ -1,24 +1,24 @@
 #app {
 
   .main-container {
-    min-height: 100%;
-    transition: margin-left .28s;
+    min-height : 100%;
+    transition : margin-left .28s;
     margin-left: $sideBarWidth;
-    position: relative;
+    position   : relative;
   }
 
   .sidebar-container {
-    transition: width 0.28s;
-    width: $sideBarWidth !important;
+    transition      : width 0.28s;
+    width           : $sideBarWidth !important;
     background-color: $menuBg;
-    height: 100%;
-    position: fixed;
-    font-size: 0px;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1001;
-    overflow: hidden;
+    height          : 100%;
+    position        : fixed;
+    font-size       : 0px;
+    top             : 0;
+    bottom          : 0;
+    left            : 0;
+    z-index         : 1001;
+    overflow        : hidden;
 
     // reset element-ui css
     .horizontal-collapse-transition {
@@ -48,8 +48,8 @@
     }
 
     a {
-      display: inline-block;
-      width: 100%;
+      display : inline-block;
+      width   : 100%;
       overflow: hidden;
     }
 
@@ -60,7 +60,7 @@
     .el-menu {
       border: none;
       height: 100%;
-      width: 100% !important;
+      width : 100% !important;
     }
 
     // menu hover
@@ -77,7 +77,7 @@
 
     & .nest-menu .el-submenu>.el-submenu__title,
     & .el-submenu .el-menu-item {
-      min-width: $sideBarWidth !important;
+      min-width       : $sideBarWidth !important;
       background-color: $subMenuBg !important;
 
       &:hover {
@@ -100,7 +100,7 @@
     }
 
     .submenu-title-noDropdown {
-      padding: 0 !important;
+      padding : 0 !important;
       position: relative;
 
       .el-tooltip {
@@ -132,11 +132,11 @@
       .el-submenu {
         &>.el-submenu__title {
           &>span {
-            height: 0;
-            width: 0;
-            overflow: hidden;
+            height    : 0;
+            width     : 0;
+            overflow  : hidden;
             visibility: hidden;
-            display: inline-block;
+            display   : inline-block;
           }
         }
       }
@@ -155,14 +155,14 @@
 
     .sidebar-container {
       transition: transform .28s;
-      width: $sideBarWidth !important;
+      width     : $sideBarWidth !important;
     }
 
     &.hideSidebar {
       .sidebar-container {
-        pointer-events: none;
+        pointer-events     : none;
         transition-duration: 0.3s;
-        transform: translate3d(-$sideBarWidth, 0, 0);
+        transform          : translate3d(-$sideBarWidth, 0, 0);
       }
     }
   }
@@ -206,7 +206,7 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      background: #99a9bf;
+      background   : #99a9bf;
       border-radius: 20px;
     }
   }

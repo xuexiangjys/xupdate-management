@@ -20,6 +20,7 @@
       ])
     }
   }
+
 </script>
 
 <style lang="scss" scoped>
@@ -44,4 +45,5 @@
       margin-bottom: 10px;
     }
   }
+
 </style>

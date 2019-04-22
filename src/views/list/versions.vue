@@ -15,7 +15,7 @@
         <el-table-column property="uploadTime" label="发布日期" width="130"></el-table-column>
         <el-table-column property="modifyContent" label="更新内容" width="320"></el-table-column>
 
-        <el-table-column label="操作">
+        <el-table-column label="操作" min-width="230">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="handleDownload(scope.$index, scope.row)">下载</el-button>
             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -67,6 +67,14 @@
     data() {
       return {
         appData: [{
+          appKey: "test",
+          versionName: "1.0.24",
+          versionCode: "24",
+          appSize: "5M",
+          forceUpdate: false,
+          uploadTime: "2018-08-24",
+          modifyContent: "1、优化api接口。\\r\\n2、添加使用demo演示。\\r\\n3、新增自定义更新服务API接口。\\r\\n4、优化更新提示界面。"
+        }, {
           appKey: "test",
           versionName: "1.0.24",
           versionCode: "24",
@@ -150,6 +158,7 @@
       }
     }
   };
+
 </script>
 
 <style lang="scss">
@@ -158,4 +167,5 @@
   .table_container {
     padding: 20px;
   }
+
 </style>

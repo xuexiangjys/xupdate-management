@@ -85,6 +85,7 @@
       }
     }
   };
+
 </script>
 
 <style lang="scss">
@@ -100,4 +101,5 @@
     border: 1px solid #eaeefb;
     padding: 10px 10px 0;
   }
+
 </style>

@@ -2,7 +2,7 @@
   &:after {
     content: "";
     display: table;
-    clear: both;
+    clear  : both;
   }
 }
 
@@ -16,13 +16,13 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #99a9bf;
+    background   : #99a9bf;
     border-radius: 20px;
   }
 }
 
 @mixin relative {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width   : 100%;
+  height  : 100%;
 }
