@@ -16,11 +16,11 @@ service.interceptors.request.use(
     // do something before request is sent
 
     if (store.getters.token) {
-      // let each request carry token
-      // ['X-Token'] is a custom headers key
-      // please modify it according to the actual situation
+       // 添加请求Token
       config.headers['X-Token'] = getToken()
     }
+    // 添加请求时间戳
+    config.headers['X-TimeStamp'] = (new Date()).getTime(); 
     return config
   },
   error => {
@@ -61,7 +61,7 @@ service.interceptors.response.use(
           cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
+          store.dispatch('account/resetToken').then(() => {
             location.reload()
           })
         })

@@ -31,17 +31,17 @@ const mutations = {
 }
 
 const actions = {
-  // user login
+  // account login
   login({
     commit
   }, userInfo) {
     const {
-      username,
+      loginName,
       password
     } = userInfo
     return new Promise((resolve, reject) => {
       login({
-        username: username.trim(),
+        loginName: loginName.trim(),
         password: password
       }).then(response => {
         const {
@@ -56,7 +56,7 @@ const actions = {
     })
   },
 
-  // get user info
+  // get account info
   getInfo({
     commit,
     state
@@ -85,7 +85,7 @@ const actions = {
     })
   },
 
-  // user logout
+  // account logout
   logout({
     commit,
     state

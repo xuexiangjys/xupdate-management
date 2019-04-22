@@ -7,11 +7,11 @@
         <h3 class="title">版本更新管理系统</h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="loginName">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input ref="username" v-model="loginForm.username" placeholder="请输入用户名" name="username" type="text"
+        <el-input ref="loginName" v-model="loginForm.loginName" placeholder="请输入用户名" name="loginName" type="text"
           tabindex="1" auto-complete="on" />
       </el-form-item>
 
@@ -34,14 +34,14 @@
 
 <script>
   import {
-    validUsername
+    validLoginName
   } from '@/utils/validate'
 
   export default {
     name: 'Login',
     data() {
-      const validateUsername = (rule, value, callback) => {
-        if (!validUsername(value)) {
+      const validateLoginName = (rule, value, callback) => {
+        if (!validLoginName(value)) {
           callback(new Error('请输入正确的用户名！'))
         } else {
           callback()
@@ -56,14 +56,14 @@
       }
       return {
         loginForm: {
-          username: 'admin',
+          loginName: 'admin',
           password: '123456'
         },
         loginRules: {
-          username: [{
+          loginName: [{
             required: true,
             trigger: 'blur',
-            validator: validateUsername
+            validator: validateLoginName
           }],
           password: [{
             required: true,
@@ -99,10 +99,14 @@
         this.$refs.loginForm.validate(valid => {
           if (valid) {
             this.loading = true
-            this.$store.dispatch('user/login', this.loginForm).then(() => {
+            this.$store.dispatch('account/login', this.loginForm).then(() => {
               this.$router.push({
                 path: this.redirect || '/'
               })
+              this.$message({
+                type: "success",
+                message: "登录成功!"
+              });
               this.loading = false
             }).catch(() => {
               this.loading = false
