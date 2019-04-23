@@ -1,18 +1,26 @@
 <template>
   <div class="fillcontain">
     <div class="table_container">
-      <el-table :data="appData" highlight-current-row style="width: 100%">
+      <el-table :data="appData" v-loading="loading" highlight-current-row style="width: 100%">
         <el-table-column type="index" width="80"></el-table-column>
         <el-table-column property="appKey" label="唯一号" width="120"></el-table-column>
         <el-table-column property="versionName" label="版本名" width="100"></el-table-column>
         <el-table-column property="versionCode" label="版本号" width="100"></el-table-column>
-        <el-table-column property="appSize" label="应用大小" width="100"></el-table-column>
+        <el-table-column property="apkSize" label="应用大小(M)" width="100">
+          <template slot-scope="scope">
+            <span>{{(scope.row.apkSize / 1024).toFixed(2)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column property="forceUpdate" label="是否强制更新" width="120">
           <template slot-scope="scope">
             <span>{{scope.row.forceUpdate ? "是":"否"}}</span>
           </template>
         </el-table-column>
-        <el-table-column property="uploadTime" label="发布日期" width="130"></el-table-column>
+        <el-table-column property="uploadTime" label="发布日期" width="130">
+          <template slot-scope="scope">
+            <span>{{changeDateFormat(scope.row.uploadTime)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column property="modifyContent" label="更新内容" width="320"></el-table-column>
 
         <el-table-column label="操作" min-width="230">
@@ -63,26 +71,16 @@
 </template>
 
 <script>
+  import {
+    getVersions
+  } from '@/api/update'
+  import {
+    isEmpty
+  } from '@/utils/validate'
   export default {
     data() {
       return {
-        appData: [{
-          appKey: "test",
-          versionName: "1.0.24",
-          versionCode: "24",
-          appSize: "5M",
-          forceUpdate: false,
-          uploadTime: "2018-08-24",
-          modifyContent: "1、优化api接口。\\r\\n2、添加使用demo演示。\\r\\n3、新增自定义更新服务API接口。\\r\\n4、优化更新提示界面。"
-        }, {
-          appKey: "test",
-          versionName: "1.0.24",
-          versionCode: "24",
-          appSize: "5M",
-          forceUpdate: false,
-          uploadTime: "2018-08-24",
-          modifyContent: "1、优化api接口。\\r\\n2、添加使用demo演示。\\r\\n3、新增自定义更新服务API接口。\\r\\n4、优化更新提示界面。"
-        }],
+        appData: [],
         apprules: {
           appKey: [{
             required: true,
@@ -102,6 +100,7 @@
         },
         selectApp: {},
         dialogFormVisible: false,
+        loading: true,
         currentRow: null,
         offset: 0,
         limit: 20,
@@ -109,13 +108,39 @@
         currentPage: 1
       };
     },
+    mounted() {
+      this.fetchData()
+    },
+
     methods: {
+      fetchData() {
+        getVersions().then(response => {
+          this.appData = response.data;
+          this.loading = false;
+        })
+      },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val) {
         this.currentPage = val;
         this.offset = (val - 1) * this.limit;
+      },
+      changeDateFormat(uploadTime) {
+        if (isEmpty(uploadTime)) {
+          return uploadTime;
+        }
+        var date = new Date(uploadTime);
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+
+        if (month < 10) {
+          month = "0" + month;
+        }
+        if (day < 10) {
+          day = "0" + day;
+        }
+        return (date.getFullYear() + "-" + month + "-" + day);
       },
       handleDownload(index, row) {
         this.$message({

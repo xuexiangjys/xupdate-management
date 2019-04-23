@@ -17,3 +17,11 @@ export function isExternal(path) {
 export function validName(str) {
   return /^[a-zA-Z0-9_-]{4,16}$/.test(str)
 }
+
+export function isEmpty(obj) {
+  if (typeof obj == "undefined" || obj == null || obj == "") {
+    return true;
+  } else {
+    return false;
+  }
+}

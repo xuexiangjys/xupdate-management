@@ -1,14 +1,18 @@
 <template>
   <div class="fillcontain">
     <div class="table_container">
-      <el-table :data="userData" highlight-current-row style="width: 100%">
+      <el-table :data="accountData" v-loading="loading" highlight-current-row style="width: 100%">
         <el-table-column type="index" width="80"></el-table-column>
         <el-table-column property="loginName" label="用户名" width="120"></el-table-column>
         <el-table-column property="password" label="密码" width="120"></el-table-column>
         <el-table-column property="nick" label="别名" width="120"></el-table-column>
         <el-table-column property="authority" label="权限" width="100"></el-table-column>
         <el-table-column property="phone" label="手机号" width="150"></el-table-column>
-        <el-table-column property="registerTime" label="注册时间" width="130"></el-table-column>
+        <el-table-column property="registerTime" label="注册时间" width="130">
+          <template slot-scope="scope">
+            <span>{{changeDateFormat(scope.row.registerTime)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column property="address" label="注册地址" width="250"></el-table-column>
 
         <el-table-column label="操作" min-width="180">
@@ -25,33 +29,33 @@
       </div>
 
       <el-dialog title="修改账户信息" :visible.sync="dialogFormVisible">
-        <el-form :model="selectUser" :rules="userrules" ref="userForm" label-width="100px">
+        <el-form :model="selectAccount" :rules="accountrules" ref="userForm" label-width="100px">
           <el-form-item label="用户名" prop="loginName">
-            <el-input v-model="selectUser.loginName" placeholder="请输入用户名（登录使用）"></el-input>
+            <el-input v-model="selectAccount.loginName" placeholder="请输入用户名（登录使用）"></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
-            <el-input v-model="selectUser.password" placeholder="请输入密码（登录使用）"></el-input>
+            <el-input v-model="selectAccount.password" placeholder="请输入密码（登录使用）"></el-input>
           </el-form-item>
           <el-form-item label="别名" prop="nick">
-            <el-input v-model="selectUser.nick" placeholder="请输入别名"></el-input>
+            <el-input v-model="selectAccount.nick" placeholder="请输入别名"></el-input>
           </el-form-item>
           <el-form-item label="权限" prop="authority">
-            <el-select v-model="selectUser.authority" placeholder="请选择账户类型">
+            <el-select v-model="selectAccount.authority" placeholder="请选择账户类型">
               <el-option label="管理员" value="admin"></el-option>
               <el-option label="普通用户" value="editor"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="手机号" prop="phone">
-            <el-input v-model="selectUser.phone" placeholder="请输入手机号" oninput="value=value.replace(/[^\d]/g,'')">
+            <el-input v-model="selectAccount.phone" placeholder="请输入手机号" oninput="value=value.replace(/[^\d]/g,'')">
             </el-input>
           </el-form-item>
           <el-form-item label="注册时间" prop="registerTime">
-            <el-date-picker v-model="selectUser.registerTime" align="right" type="date" placeholder="选择日期"
+            <el-date-picker v-model="selectAccountRegisterTime" align="right" type="date" placeholder="选择日期"
               value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="地址" prop="address">
-            <el-input v-model="selectUser.address" placeholder="请输入账户注册地址"></el-input>
+            <el-input v-model="selectAccount.address" placeholder="请输入账户注册地址"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -64,27 +68,17 @@
 </template>
 
 <script>
+  import {
+    getAccounts
+  } from '@/api/account'
+  import {
+    isEmpty
+  } from '@/utils/validate'
   export default {
     data() {
       return {
-        userData: [{
-          loginName: "xuexiang",
-          password: "123456",
-          nick: "薛翔",
-          authority: "admin",
-          phone: "13913848578",
-          registerTime: "2018-08-24",
-          address: "南京市江宁区"
-        }, {
-          loginName: "xuexiang",
-          password: "123456",
-          nick: "薛翔",
-          authority: "admin",
-          phone: "13913848578",
-          registerTime: "2018-08-24",
-          address: "南京市江宁区"
-        }],
-        userrules: {
+        accountData: [],
+        accountrules: {
           loginName: [{
             required: true,
             message: "请输入用户名（登录使用）",
@@ -106,8 +100,11 @@
             trigger: "change"
           }]
         },
-        selectUser: {},
+        selectAccount: {},
+        selectIndex: 0,
+        selectAccountRegisterTime: "",
         dialogFormVisible: false,
+        loading: true,
         currentRow: null,
         offset: 0,
         limit: 20,
@@ -115,7 +112,16 @@
         currentPage: 1
       };
     },
+    mounted() {
+      this.fetchData()
+    },
     methods: {
+      fetchData() {
+        getAccounts().then(response => {
+          this.accountData = response.data;
+          this.loading = false;
+        })
+      },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
@@ -123,8 +129,27 @@
         this.currentPage = val;
         this.offset = (val - 1) * this.limit;
       },
+      changeDateFormat(registerTime) {
+        if (isEmpty(registerTime)) {
+          return registerTime;
+        }
+        var date = new Date(registerTime);
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+
+        if (month < 10) {
+          month = "0" + month;
+        }
+        if (day < 10) {
+          day = "0" + day;
+        }
+        return (date.getFullYear() + "-" + month +
+          "-" + day);
+      },
       handleEdit(index, row) {
-        this.selectUser = row;
+        this.selectAccount = row;
+        this.selectIndex = index;
+        this.selectAccountRegisterTime = this.changeDateFormat(row.registerTime)
         this.dialogFormVisible = true;
       },
       handleDelete(index, row) {
@@ -134,7 +159,7 @@
             type: "warning"
           })
           .then(() => {
-            this.userData.splice(index, 1);
+            this.accountData.splice(index, 1);
             this.$message({
               type: "success",
               message: "删除成功!"
@@ -146,6 +171,7 @@
         this.$refs[formName].validate(valid => {
           if (valid) {
             this.dialogFormVisible = false;
+            this.accountData[this.selectIndex].registerTime = new Date(this.selectAccountRegisterTime).getTime();
             this.$message({
               type: "success",
               message: "编辑成功!"

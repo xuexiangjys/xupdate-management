@@ -78,5 +78,38 @@ export default [
         data: 'success'
       }
     }
+  },
+  
+   // account accounts
+  {
+     url: '/account/accounts',
+     type: 'get',
+     response: _ => {
+       return {
+         code: 0,
+         msg: "",
+         data: [{
+           "accountId": 1,
+           "loginName": "admin",
+           "password": "123456",
+           "nick": "admin",
+           "authority": "admin",
+           "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+           "phone": "13513957542",
+           "address": "南京市江宁区",
+           "registerTime": 1525536000000
+         }, {
+           "accountId": 2,
+           "loginName": "xuexiang",
+           "password": "123456",
+           "nick": "薛翔",
+           "authority": "admin",
+           "avatar": "https://raw.githubusercontent.com/xuexiangjys/Resource/master/img/avatar/avatar_github.jpg",
+           "phone": "13913845875",
+           "address": "南京市江宁区",
+           "registerTime": 1544457600000
+         }]
+       }
+     }
   }
 ]

@@ -22,3 +22,10 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function getAccounts() {
+  return request({
+    url: '/account/accounts',
+    method: 'get'
+  })
+}

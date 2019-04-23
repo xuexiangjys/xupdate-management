@@ -11,7 +11,7 @@ npm install
 # serve for development with hot reload at http://localhost:8088/mock
 npm run dev
 
-# preview for production with hot reload at http://localhost:1111
+# preview for production at http://localhost:1111
 npm run preview
 
 ```
