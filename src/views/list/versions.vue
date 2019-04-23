@@ -104,6 +104,7 @@
           }]
         },
         selectApp: {},
+        selectIndex: 0,
         dialogFormVisible: false,
         loading: true,
         currentRow: null,
@@ -163,7 +164,8 @@
         }
       },
       handleEdit(index, row) {
-        this.selectApp = row;
+        this.selectApp = Object.assign({}, row) // copy obj
+        this.selectIndex = index;
         this.dialogFormVisible = true;
       },
       handleDelete(index, row) {
@@ -191,6 +193,7 @@
             updateVersion(this.selectApp).then(response => {
               if (response.data) {
                 this.dialogFormVisible = false;
+                this.appData.splice(this.selectIndex, 1, this.selectApp);
                 this.$message({
                   type: "success",
                   message: "编辑成功!"

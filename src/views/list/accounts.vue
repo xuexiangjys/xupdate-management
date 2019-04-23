@@ -151,7 +151,7 @@
           "-" + day);
       },
       handleEdit(index, row) {
-        this.selectAccount = row;
+        this.selectAccount = Object.assign({}, row) // copy obj
         this.selectAccountRegisterTime = this.changeDateFormat(row.registerTime);
         this.selectIndex = index;
         this.dialogFormVisible = true;
@@ -178,12 +178,12 @@
       updateInfo(formName) {
         this.$refs[formName].validate(valid => {
           if (valid) {
-            let accountInfo = this.selectAccount;
+            const accountInfo = Object.assign({}, this.selectAccount)
             accountInfo.registerTime = new Date(this.selectAccountRegisterTime).getTime();
             updateAccount(accountInfo).then(response => {
               if (response.data) {
                 this.dialogFormVisible = false;
-                this.accountData[this.selectIndex] = accountInfo;
+                this.accountData.splice(this.selectIndex, 1, this.selectAccount);
                 this.$message({
                   type: "success",
                   message: "编辑成功!"
