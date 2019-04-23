@@ -34,11 +34,11 @@ const actions = {
   // account login
   login({
     commit
-  }, userInfo) {
+  }, accountInfo) {
     const {
       loginName,
       password
-    } = userInfo
+    } = accountInfo
     return new Promise((resolve, reject) => {
       login({
         loginName: loginName.trim(),
@@ -91,6 +91,8 @@ const actions = {
   }) {
     return new Promise((resolve, reject) => {
       logout().then(() => {
+        commit('SET_NAME', '')
+        commit('SET_AVATAR', '')
         commit('SET_TOKEN', '')
         removeToken()
         resetRouter()

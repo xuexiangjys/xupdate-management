@@ -8,14 +8,12 @@
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8088
+# serve for development with hot reload at http://localhost:8088/mock
 npm run dev
 
-# build for production with minification
-npm run build
+# preview for production with hot reload at http://localhost:1111
+npm run preview
 
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
 
 ## 关联链接

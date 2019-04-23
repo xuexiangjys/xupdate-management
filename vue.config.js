@@ -30,24 +30,6 @@ module.exports = {
       warnings: false,
       errors: false
     },
-    // proxy: {
-    //   [process.env.VUE_APP_BASE_API]: {
-    //     target: process.env.NODE_ENV === 'development' ? `http://localhost:${port}/mock` : 'http://localhost:1111',
-    //     changeOrigin: true,
-    //     pathRewrite: {
-    //       ['^' + process.env.VUE_APP_BASE_API]: ''
-    //     }
-    //   }
-    // },
-    proxy: {
-      [process.env.VUE_APP_BASE_API]: {
-        target: 'http://localhost:1111',
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
-        }
-      }
-    },
     after: require('./mock/mock-server.js')
   },
   configureWebpack: {
