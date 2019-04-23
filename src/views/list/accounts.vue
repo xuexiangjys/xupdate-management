@@ -52,7 +52,7 @@
             </el-input>
           </el-form-item>
           <el-form-item label="注册时间" prop="registerTime">
-            <el-date-picker v-model="selectAccount.registerTime" align="right" type="date" placeholder="选择日期"
+            <el-date-picker v-model="selectAccountRegisterTime" align="right" type="date" placeholder="选择日期"
               value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
@@ -152,7 +152,7 @@
       },
       handleEdit(index, row) {
         this.selectAccount = row;
-        this.selectAccount.registerTime = this.changeDateFormat(row.registerTime);
+        this.selectAccountRegisterTime = this.changeDateFormat(row.registerTime);
         this.selectIndex = index;
         this.dialogFormVisible = true;
       },
@@ -178,8 +178,8 @@
       updateInfo(formName) {
         this.$refs[formName].validate(valid => {
           if (valid) {
-            var accountInfo = this.selectAccount;
-            accountInfo.registerTime = new Date(this.selectAccount.registerTime).getTime();
+            let accountInfo = this.selectAccount;
+            accountInfo.registerTime = new Date(this.selectAccountRegisterTime).getTime();
             updateAccount(accountInfo).then(response => {
               if (response.data) {
                 this.dialogFormVisible = false;

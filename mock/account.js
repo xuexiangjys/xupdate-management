@@ -1,4 +1,3 @@
-
 const tokens = {
   admin: {
     token: 'admin-token'
@@ -35,7 +34,9 @@ export default [
     url: '/account/login',
     type: 'post',
     response: config => {
-      const { loginName } = config.body
+      const {
+        loginName
+      } = config.body
       const token = tokens[loginName]
 
       // mock error
@@ -48,7 +49,8 @@ export default [
 
       return {
         code: 0,
-        data: token
+        data: token,
+        msg: ''
       }
     }
   },
@@ -58,7 +60,9 @@ export default [
     url: '/account/info',
     type: 'get',
     response: config => {
-      const { token } = config.query
+      const {
+        token
+      } = config.query
       const info = accounts[token]
 
       // mock error
@@ -71,7 +75,8 @@ export default [
 
       return {
         code: 0,
-        data: info
+        data: info,
+        msg: ''
       }
     }
   },
@@ -83,41 +88,78 @@ export default [
     response: _ => {
       return {
         code: 0,
-        data: 'success'
+        data: true,
+        msg: ''
       }
     }
   },
-  
-   // account accounts
+
+  // account accounts
   {
-     url: '/account/accounts',
-     type: 'get',
-     response: _ => {
-       return {
-         code: 0,
-         msg: "",
-         data: [{
-           "accountId": 1,
-           "loginName": "admin",
-           "password": "123456",
-           "nick": "admin",
-           "authority": "admin",
-           "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
-           "phone": "13513957542",
-           "address": "南京市江宁区",
-           "registerTime": 1525536000000
-         }, {
-           "accountId": 2,
-           "loginName": "xuexiang",
-           "password": "123456",
-           "nick": "薛翔",
-           "authority": "admin",
-           "avatar": "https://raw.githubusercontent.com/xuexiangjys/Resource/master/img/avatar/avatar_github.jpg",
-           "phone": "13913845875",
-           "address": "南京市江宁区",
-           "registerTime": 1544457600000
-         }]
-       }
-     }
-  }
+    url: '/account/accounts',
+    type: 'get',
+    response: _ => {
+      return {
+        code: 0,
+        msg: "",
+        data: [{
+          "accountId": 1,
+          "loginName": "admin",
+          "password": "123456",
+          "nick": "admin",
+          "authority": "admin",
+          "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+          "phone": "13513957542",
+          "address": "南京市江宁区",
+          "registerTime": 1525536000000
+        }, {
+          "accountId": 2,
+          "loginName": "xuexiang",
+          "password": "123456",
+          "nick": "薛翔",
+          "authority": "admin",
+          "avatar": "https://raw.githubusercontent.com/xuexiangjys/Resource/master/img/avatar/avatar_github.jpg",
+          "phone": "13913845875",
+          "address": "南京市江宁区",
+          "registerTime": 1544457600000
+        }]
+      }
+    }
+  },
+
+  {
+    url: '/account/register',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 0,
+        data: true,
+        msg: ''
+      }
+    }
+  },
+
+  {
+    url: '/account/delete',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 0,
+        data: true,
+        msg: ''
+      }
+    }
+  },
+
+  {
+    url: '/account/updateInfo',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 0,
+        data: true,
+        msg: ''
+      }
+    }
+  },
 ]
