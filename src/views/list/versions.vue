@@ -1,11 +1,12 @@
 <template>
   <div class="fillcontain">
     <div class="table_container">
-      <el-table :data="appData" v-loading="loading" highlight-current-row style="width: 100%">
+      <el-table :data="appData" v-loading="loading" highlight-current-row style="width: 100%"
+        :default-sort="{prop: 'versionCode', order: 'descending'}">
         <el-table-column type="index" width="80"></el-table-column>
-        <el-table-column property="appKey" label="唯一号" width="200"></el-table-column>
+        <el-table-column property="appKey" label="唯一号" width="200" sortable></el-table-column>
         <el-table-column property="versionName" label="版本名" width="100"></el-table-column>
-        <el-table-column property="versionCode" label="版本号" width="100"></el-table-column>
+        <el-table-column property="versionCode" label="版本号" width="100" sortable></el-table-column>
         <el-table-column property="apkSize" label="应用大小(M)" width="100">
           <template slot-scope="scope">
             <span>{{(scope.row.apkSize / 1024).toFixed(2)}}</span>
@@ -16,7 +17,7 @@
             <span>{{scope.row.updateStatus == 2 ? "是":"否"}}</span>
           </template>
         </el-table-column>
-        <el-table-column property="uploadTime" label="发布日期" width="130">
+        <el-table-column property="uploadTime" label="发布日期" width="130" sortable>
           <template slot-scope="scope">
             <span>{{changeDateFormat(scope.row.uploadTime)}}</span>
           </template>

@@ -1,14 +1,15 @@
 <template>
   <div class="fillcontain">
     <div class="table_container">
-      <el-table :data="accountData" v-loading="loading" highlight-current-row style="width: 100%">
+      <el-table :data="accountData" v-loading="loading" highlight-current-row style="width: 100%"
+        :default-sort="{prop: 'registerTime', order: 'descending'}">
         <el-table-column type="index" width="80"></el-table-column>
         <el-table-column property="loginName" label="用户名" width="120"></el-table-column>
         <el-table-column property="password" label="密码" width="120"></el-table-column>
         <el-table-column property="nick" label="别名" width="120"></el-table-column>
         <el-table-column property="authority" label="权限" width="100"></el-table-column>
         <el-table-column property="phone" label="手机号" width="150"></el-table-column>
-        <el-table-column property="registerTime" label="注册时间" width="130">
+        <el-table-column property="registerTime" label="注册时间" width="130" sortable>
           <template slot-scope="scope">
             <span>{{changeDateFormat(scope.row.registerTime)}}</span>
           </template>
