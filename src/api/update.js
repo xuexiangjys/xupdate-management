@@ -33,3 +33,11 @@ export function deleteVersion(data) {
     data
   })
 }
+
+export function updateVersion(data) {
+  return request({
+    url: '/update/updateInfo',
+    method: 'post',
+    data
+  })
+}

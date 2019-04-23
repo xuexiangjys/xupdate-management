@@ -50,7 +50,7 @@
               placeholder="请输入应用版本号，例如：24"></el-input>
           </el-form-item>
           <el-form-item label="是否强制更新" prop="updateStatus">
-            <el-switch v-model="selectApp.updateStatus"></el-switch>
+            <el-switch v-model="selectApp.updateStatus" inactive-value="1" active-value="2"></el-switch>
           </el-form-item>
           <el-form-item label="发布日期" prop="uploadTime">
             <el-date-picker v-model="selectApp.uploadTime" align="right" type="date" placeholder="选择日期"
@@ -73,7 +73,8 @@
 <script>
   import {
     getVersions,
-    deleteVersion
+    deleteVersion,
+    updateVersion
   } from '@/api/update'
   import {
     isEmpty
@@ -144,6 +145,8 @@
         return (date.getFullYear() + "-" + month + "-" + day);
       },
       handleDownload(index, row) {
+        //弹出浏览器下载
+        window.location.href = process.env.VUE_APP_BASE_URL + "/update/apk/" + row.downloadUrl;
         this.$message({
           type: "success",
           message: "开始下载..."
@@ -175,11 +178,15 @@
       updateInfo(formName) {
         this.$refs[formName].validate(valid => {
           if (valid) {
-            this.dialogFormVisible = false;
-            this.$message({
-              type: "success",
-              message: "编辑成功!"
-            });
+            updateVersion(this.selectApp).then(response => {
+              if (response.data) {
+                this.dialogFormVisible = false;
+                this.$message({
+                  type: "success",
+                  message: "编辑成功!"
+                });
+              }
+            })
           } else {
             console.log("error submit!!");
             return false;

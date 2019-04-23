@@ -45,3 +45,11 @@ export function deleteAccount(data) {
     data
   })
 }
+
+export function updateAccount(data) {
+  return request({
+    url: '/account/updateInfo',
+    method: 'post',
+    data
+  })
+}

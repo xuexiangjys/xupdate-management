@@ -14,8 +14,8 @@
             <el-input v-model="appForm.versionCode" oninput="value=value.replace(/[^\d]/g,'')"
               placeholder="请输入应用版本号，例如：24"></el-input>
           </el-form-item>
-          <el-form-item label="是否强制更新" prop="forceUpdate">
-            <el-switch v-model="appForm.forceUpdate"></el-switch>
+          <el-form-item label="是否强制更新" prop="updateStatus">
+            <el-switch v-model="appForm.updateStatus" inactive-value="1" active-value="2"></el-switch>
           </el-form-item>
           <el-form-item label="更新内容" prop="modifyContent">
             <el-input type="textarea" v-model="appForm.modifyContent" placeholder="请输入更新日志..."></el-input>
@@ -50,7 +50,7 @@
           versionName: "",
           versionCode: "",
           modifyContent: "",
-          forceUpdate: false,
+          updateStatus: 1,
         },
         apprules: {
           appKey: [{
@@ -85,13 +85,7 @@
         this.$refs[formName].validate(valid => {
           if (valid) {
             if (this.hasSelectedApk) {
-              addVersionInfo({
-                appKey: this.appForm.appKey,
-                versionName: this.appForm.versionName,
-                versionCode: this.appForm.versionCode,
-                updateStatus: this.appForm.forceUpdate ? 2 : 1,
-                modifyContent: this.appForm.modifyContent
-              }).then(response => {
+              addVersionInfo(this.appForm).then(response => {
                 console.log(response.data)
                 if (response.data.versionId !== 0) {
                   this.versionId = response.data.versionId;
