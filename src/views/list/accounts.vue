@@ -50,7 +50,7 @@
             </el-input>
           </el-form-item>
           <el-form-item label="注册时间" prop="registerTime">
-            <el-date-picker v-model="selectAccountRegisterTime" align="right" type="date" placeholder="选择日期"
+            <el-date-picker v-model="selectAccount.registerTime" align="right" type="date" placeholder="选择日期"
               value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
@@ -70,7 +70,8 @@
 <script>
   import {
     getAccounts,
-    deleteAccount
+    deleteAccount,
+    updateAccount
   } from '@/api/account'
   import {
     isEmpty
@@ -149,8 +150,8 @@
       },
       handleEdit(index, row) {
         this.selectAccount = row;
+        this.selectAccount.registerTime = this.changeDateFormat(row.registerTime);
         this.selectIndex = index;
-        this.selectAccountRegisterTime = this.changeDateFormat(row.registerTime)
         this.dialogFormVisible = true;
       },
       handleDelete(index, row) {
@@ -175,12 +176,18 @@
       updateInfo(formName) {
         this.$refs[formName].validate(valid => {
           if (valid) {
-            this.dialogFormVisible = false;
-            this.accountData[this.selectIndex].registerTime = new Date(this.selectAccountRegisterTime).getTime();
-            this.$message({
-              type: "success",
-              message: "编辑成功!"
-            });
+            var accountInfo = this.selectAccount;
+            accountInfo.registerTime = new Date(this.selectAccount.registerTime).getTime();
+            updateAccount(accountInfo).then(response => {
+              if (response.data) {
+                this.dialogFormVisible = false;
+                this.accountData[this.selectIndex] = accountInfo;
+                this.$message({
+                  type: "success",
+                  message: "编辑成功!"
+                });
+              }
+            })
           } else {
             console.log("error submit!!");
             return false;
@@ -189,7 +196,6 @@
       }
     }
   };
-
 </script>
 
 <style lang="scss">
@@ -198,5 +204,4 @@
   .table_container {
     padding: 20px;
   }
-
 </style>

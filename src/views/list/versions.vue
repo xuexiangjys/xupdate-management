@@ -146,11 +146,18 @@
       },
       handleDownload(index, row) {
         //弹出浏览器下载
-        window.location.href = process.env.VUE_APP_BASE_URL + "/update/apk/" + row.downloadUrl;
-        this.$message({
-          type: "success",
-          message: "开始下载..."
-        });
+        if (!isEmpty(row.downloadUrl) && row.downloadUrl !== 'null') {
+          window.location.href = process.env.VUE_APP_BASE_URL + "/update/apk/" + row.downloadUrl;
+          this.$message({
+            type: "success",
+            message: "开始下载..."
+          });
+        } else {
+          this.$message({
+            type: "error",
+            message: "暂无apk下载！"
+          });
+        }
       },
       handleEdit(index, row) {
         this.selectApp = row;
@@ -195,7 +202,6 @@
       }
     }
   };
-
 </script>
 
 <style lang="scss">
@@ -204,5 +210,4 @@
   .table_container {
     padding: 20px;
   }
-
 </style>
