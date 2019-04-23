@@ -69,7 +69,8 @@
 
 <script>
   import {
-    getAccounts
+    getAccounts,
+    deleteAccount
   } from '@/api/account'
   import {
     isEmpty
@@ -159,11 +160,15 @@
             type: "warning"
           })
           .then(() => {
-            this.accountData.splice(index, 1);
-            this.$message({
-              type: "success",
-              message: "删除成功!"
-            });
+            deleteAccount(row).then(response => {
+              if (response.data) {
+                this.accountData.splice(index, 1);
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+              }
+            })
           })
           .catch(() => {});
       },

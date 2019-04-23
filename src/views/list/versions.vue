@@ -3,7 +3,7 @@
     <div class="table_container">
       <el-table :data="appData" v-loading="loading" highlight-current-row style="width: 100%">
         <el-table-column type="index" width="80"></el-table-column>
-        <el-table-column property="appKey" label="唯一号" width="120"></el-table-column>
+        <el-table-column property="appKey" label="唯一号" width="200"></el-table-column>
         <el-table-column property="versionName" label="版本名" width="100"></el-table-column>
         <el-table-column property="versionCode" label="版本号" width="100"></el-table-column>
         <el-table-column property="apkSize" label="应用大小(M)" width="100">
@@ -11,9 +11,9 @@
             <span>{{(scope.row.apkSize / 1024).toFixed(2)}}</span>
           </template>
         </el-table-column>
-        <el-table-column property="forceUpdate" label="是否强制更新" width="120">
+        <el-table-column property="updateStatus" label="是否强制更新" width="120">
           <template slot-scope="scope">
-            <span>{{scope.row.forceUpdate ? "是":"否"}}</span>
+            <span>{{scope.row.updateStatus == 2 ? "是":"否"}}</span>
           </template>
         </el-table-column>
         <el-table-column property="uploadTime" label="发布日期" width="130">
@@ -72,7 +72,8 @@
 
 <script>
   import {
-    getVersions
+    getVersions,
+    deleteVersion
   } from '@/api/update'
   import {
     isEmpty
@@ -159,11 +160,15 @@
             type: "warning"
           })
           .then(() => {
-            this.appData.splice(index, 1);
-            this.$message({
-              type: "success",
-              message: "删除成功!"
-            });
+            deleteVersion(row).then(response => {
+              if (response.data) {
+                this.appData.splice(index, 1);
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+              }
+            })
           })
           .catch(() => {});
       },

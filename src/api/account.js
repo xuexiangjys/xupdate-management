@@ -29,3 +29,19 @@ export function getAccounts() {
     method: 'get'
   })
 }
+
+export function register(data) {
+  return request({
+    url: '/account/register',
+    method: 'post',
+    data
+  })
+}
+
+export function deleteAccount(data) {
+  return request({
+    url: '/account/delete',
+    method: 'post',
+    data
+  })
+}

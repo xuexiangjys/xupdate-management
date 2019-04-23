@@ -14,19 +14,17 @@
             <el-input v-model="appForm.versionCode" oninput="value=value.replace(/[^\d]/g,'')"
               placeholder="请输入应用版本号，例如：24"></el-input>
           </el-form-item>
-          <el-form-item label="是否强制更新" prop="updateStatus">
-            <el-switch v-model="appForm.updateStatus"></el-switch>
+          <el-form-item label="是否强制更新" prop="forceUpdate">
+            <el-switch v-model="appForm.forceUpdate"></el-switch>
           </el-form-item>
           <el-form-item label="更新内容" prop="modifyContent">
             <el-input type="textarea" v-model="appForm.modifyContent" placeholder="请输入更新日志..."></el-input>
           </el-form-item>
           <el-form-item label="APK文件">
-            <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
-              <i class="el-icon-upload"></i>
-              <div class="el-upload__text">
-                将.apk文件拖到此处，或
-                <em>点击上传</em>
-              </div>
+            <el-upload class="upload-demo" ref="upload" action="/update/uploadApk" :http-request="uploadFile"
+              :multiple="false" :auto-upload="false" :limit="1" accept=".apk" :on-remove="onRemoveFile"
+              :on-change="onChangeFile">
+              <el-button slot="trigger" size="small" type="primary">选取.apk文件</el-button>
             </el-upload>
           </el-form-item>
           <el-form-item>
@@ -40,6 +38,10 @@
 </template>
 
 <script>
+  import {
+    addVersionInfo,
+    uploadApkFile
+  } from '@/api/update'
   export default {
     data() {
       return {
@@ -47,7 +49,8 @@
           appKey: "",
           versionName: "",
           versionCode: "",
-          updateStatus: false
+          modifyContent: "",
+          forceUpdate: false,
         },
         apprules: {
           appKey: [{
@@ -65,23 +68,62 @@
             message: "请输入版本号",
             trigger: "blur"
           }]
-        }
+        },
+        hasSelectedApk: false,
+        versionId: 0
       };
     },
     created() {},
     methods: {
+      onRemoveFile() {
+        this.hasSelectedApk = false;
+      },
+      onChangeFile(file, fileList) {
+        this.hasSelectedApk = fileList.length > 0;
+      },
       addVersionInfo(formName) {
         this.$refs[formName].validate(valid => {
           if (valid) {
-            this.$message({
-              type: "success",
-              message: "新版本添加成功!"
-            });
+            if (this.hasSelectedApk) {
+              addVersionInfo({
+                appKey: this.appForm.appKey,
+                versionName: this.appForm.versionName,
+                versionCode: this.appForm.versionCode,
+                updateStatus: this.appForm.forceUpdate ? 2 : 1,
+                modifyContent: this.appForm.modifyContent
+              }).then(response => {
+                console.log(response.data)
+                if (response.data.versionId !== 0) {
+                  this.versionId = response.data.versionId;
+                  this.$refs.upload.submit();
+                }
+              })
+            } else {
+              this.$message({
+                type: "error",
+                message: "请选择上传的apk文件!"
+              });
+            }
           } else {
             console.log("error submit!!");
             return false;
           }
         });
+      },
+      uploadFile(param) {
+        let fileObject = param.file;
+        let formData = new FormData();
+        formData.append("file", fileObject);
+        formData.append("versionId", this.versionId);
+        uploadApkFile(formData).then(response => {
+          console.log(response.data)
+          if (response.data) {
+            this.$message({
+              type: "success",
+              message: "新版本添加成功!"
+            });
+          }
+        })
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
