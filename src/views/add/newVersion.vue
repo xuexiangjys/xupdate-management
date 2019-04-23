@@ -24,7 +24,7 @@
             <el-upload class="upload-demo" ref="upload" action="/update/uploadApk" :http-request="uploadFile"
               :multiple="false" :auto-upload="false" :limit="1" accept=".apk" :on-remove="onRemoveFile"
               :on-change="onChangeFile">
-              <el-button slot="trigger" size="small" type="primary">选取.apk文件</el-button>
+              <el-button slot="trigger" size="small" type="success">选取.apk文件</el-button>
             </el-upload>
           </el-form-item>
           <el-form-item>
