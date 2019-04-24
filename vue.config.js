@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'XUpdate Management' // page title
+const name = defaultSettings.title || '版本更新管理' // page title
 const port = 8088 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/

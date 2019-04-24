@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'XUpdate Management',
+  title: '版本更新管理',
 
   /**
    * @type {boolean} true | false
