@@ -1,8 +1,7 @@
 <template>
   <div class="fillcontain">
     <div class="table_container">
-      <el-table :data="appData" v-loading="loading" highlight-current-row style="width: 100%"
-        :default-sort="{prop: 'versionCode', order: 'descending'}">
+      <el-table :data="appData" v-loading="loading" highlight-current-row style="width: 100%" border>
         <el-table-column type="index" width="80"></el-table-column>
         <el-table-column property="appKey" label="唯一号" width="200" sortable></el-table-column>
         <el-table-column property="versionName" label="版本名" width="100"></el-table-column>
@@ -36,10 +35,8 @@
         </el-table-column>
       </el-table>
 
-      <div class="Pagination" style="text-align: left;margin-top: 10px;">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-          :page-size="20" layout="total, prev, pager, next" :total="count"></el-pagination>
-      </div>
+      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
+        @pagination="fetchData" />
 
       <el-dialog title="修改版本信息" :visible.sync="dialogFormVisible">
         <el-form :model="selectApp" :rules="apprules" ref="appForm" label-width="100px">
@@ -67,7 +64,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="updateInfo('appForm')">确 定</el-button>
+          <el-button type="primary" @click="updateInfo()">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -83,7 +80,11 @@
   import {
     isEmpty
   } from '@/utils/validate'
+  import Pagination from '@/components/Pagination' // secondary package based on el-pagination
   export default {
+    components: {
+      Pagination
+    },
     data() {
       return {
         appData: [],
@@ -108,30 +109,23 @@
         selectIndex: 0,
         dialogFormVisible: false,
         loading: true,
-        currentRow: null,
-        offset: 0,
-        limit: 20,
-        count: 0,
-        currentPage: 1
+        total: 0,
+        listQuery: {
+          page: 1,
+          limit: 10,
+        }
       };
     },
-    mounted() {
+    created() {
       this.fetchData()
     },
-
     methods: {
       fetchData() {
         getVersions().then(response => {
           this.appData = response.data;
+          this.total = response.data.length;
           this.loading = false;
         })
-      },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        this.currentPage = val;
-        this.offset = (val - 1) * this.limit;
       },
       changeDateFormat(uploadTime) {
         if (isEmpty(uploadTime)) {
@@ -168,6 +162,9 @@
         this.selectApp = Object.assign({}, row) // copy obj
         this.selectIndex = index;
         this.dialogFormVisible = true;
+        this.$nextTick(() => {
+          this.$refs['appForm'].clearValidate()
+        })
       },
       handleDelete(index, row) {
         this.$confirm("版本删除后将无法恢复, 是否继续?", "提示", {
@@ -188,8 +185,8 @@
           })
           .catch(() => {});
       },
-      updateInfo(formName) {
-        this.$refs[formName].validate(valid => {
+      updateInfo() {
+        this.$refs["appForm"].validate(valid => {
           if (valid) {
             updateVersion(this.selectApp).then(response => {
               if (response.data) {
@@ -209,6 +206,7 @@
       }
     }
   };
+
 </script>
 
 <style lang="scss">
@@ -217,4 +215,5 @@
   .table_container {
     padding: 20px;
   }
+
 </style>
