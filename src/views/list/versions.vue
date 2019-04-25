@@ -35,7 +35,7 @@
         </el-table-column>
       </el-table>
 
-      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
+      <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNum" :limit.sync="listQuery.pageSize"
         @pagination="fetchData" />
 
       <el-dialog title="修改版本信息" :visible.sync="dialogFormVisible">
@@ -73,7 +73,7 @@
 
 <script>
   import {
-    getVersions,
+    getPagingVersions,
     deleteVersion,
     updateVersion
   } from '@/api/update'
@@ -111,8 +111,8 @@
         loading: true,
         total: 0,
         listQuery: {
-          page: 1,
-          limit: 10,
+          pageNum: 1,
+          pageSize: 10,
         }
       };
     },
@@ -121,10 +121,13 @@
     },
     methods: {
       fetchData() {
-        getVersions().then(response => {
-          this.appData = response.data;
-          this.total = response.data.length;
-          this.loading = false;
+        getPagingVersions(this.listQuery).then(response => {
+          const pageData = response.data;
+          if (pageData) {
+            this.appData = pageData.array;
+            this.total = pageData.total;
+            this.loading = false;
+          }
         })
       },
       changeDateFormat(uploadTime) {
@@ -206,7 +209,6 @@
       }
     }
   };
-
 </script>
 
 <style lang="scss">
@@ -215,5 +217,4 @@
   .table_container {
     padding: 20px;
   }
-
 </style>

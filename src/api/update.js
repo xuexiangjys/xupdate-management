@@ -7,6 +7,14 @@ export function getVersions() {
   })
 }
 
+export function getPagingVersions(data) {
+  return request({
+    url: '/update/versionPageQuery',
+    method: 'post',
+    data
+  })
+}
+
 export function addVersionInfo(data) {
   return request({
     url: '/update/newVersion',

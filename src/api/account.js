@@ -30,6 +30,14 @@ export function getAccounts() {
   })
 }
 
+export function getPagingAccounts(data) {
+  return request({
+    url: '/account/accountPageQuery',
+    method: 'post',
+    data
+  })
+}
+
 export function register(data) {
   return request({
     url: '/account/register',
