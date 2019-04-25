@@ -15,7 +15,7 @@
               placeholder="请输入应用版本号，例如：24"></el-input>
           </el-form-item>
           <el-form-item label="是否强制更新" prop="updateStatus">
-            <el-switch v-model="appForm.updateStatus" inactive-value="1" active-value="2"></el-switch>
+            <el-switch v-model="appForm.updateStatus" :inactive-value="1" :active-value="2"></el-switch>
           </el-form-item>
           <el-form-item label="更新内容" prop="modifyContent">
             <el-input type="textarea" v-model="appForm.modifyContent" placeholder="请输入更新日志..."></el-input>

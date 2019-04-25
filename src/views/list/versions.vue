@@ -51,7 +51,7 @@
               placeholder="请输入应用版本号，例如：24"></el-input>
           </el-form-item>
           <el-form-item label="是否强制更新" prop="updateStatus">
-            <el-switch v-model="selectApp.updateStatus" inactive-value="1" active-value="2"></el-switch>
+            <el-switch v-model="selectApp.updateStatus" :inactive-value="1" :active-value="2"></el-switch>
           </el-form-item>
           <el-form-item label="发布日期" prop="uploadTime">
             <el-date-picker v-model="selectApp.uploadTime" align="right" type="date" placeholder="选择日期"
