@@ -31,6 +31,14 @@ import Layout from '@/layout'
  * all roles can be accessed
  */
 export const constantRoutes = [{
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [{
+      path: '/redirect/:path*',
+      component: () => import('@/views/redirect/index')
+    }]
+  }, {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
@@ -52,7 +60,8 @@ export const constantRoutes = [{
       component: () => import('@/views/dashboard/index'),
       meta: {
         title: '控制台',
-        icon: 'dashboard'
+        icon: 'dashboard',
+        affix: true
       }
     }]
   },
@@ -119,6 +128,42 @@ export const constantRoutes = [{
     hidden: true
   }
 ]
+
+
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes = [{
+  path: '/add',
+  component: Layout,
+  redirect: '/add/newVersion',
+  name: 'Add',
+  meta: {
+    title: '数据添加',
+    icon: 'form',
+    roles: ['admin', 'editor']
+  },
+  children: [{
+      path: 'newVersion',
+      name: 'NewVersion',
+      component: () => import('@/views/add/newVersion'),
+      meta: {
+        title: '添加新版本',
+        roles: ['admin', 'editor']
+      }
+    },
+    {
+      path: 'newAccount',
+      name: 'NewAccount',
+      component: () => import('@/views/add/newAccount'),
+      meta: {
+        title: '添加新账户',
+        roles: ['admin']
+      }
+    }
+  ]
+}, ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support

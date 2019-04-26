@@ -2,12 +2,13 @@ import defaultSettings from '@/settings'
 
 const {
   showSettings,
+  tagsView,
   fixedHeader,
-  sidebarLogo
+  sidebarLogo,
 } = defaultSettings
 
 const state = {
-  showSettings: showSettings,
+  tagsView: tagsView,
   fixedHeader: fixedHeader,
   sidebarLogo: sidebarLogo
 }
