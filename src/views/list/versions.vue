@@ -80,6 +80,9 @@
   import {
     isEmpty
   } from '@/utils/validate'
+  import {
+    updateTable
+  } from '@/utils/index'
   import Pagination from '@/components/Pagination' // secondary package based on el-pagination
   export default {
     components: {
@@ -106,7 +109,6 @@
           }]
         },
         selectApp: {},
-        selectIndex: 0,
         dialogFormVisible: false,
         loading: true,
         total: 0,
@@ -163,7 +165,6 @@
       },
       handleEdit(index, row) {
         this.selectApp = Object.assign({}, row) // copy obj
-        this.selectIndex = index;
         this.dialogFormVisible = true;
         this.$nextTick(() => {
           this.$refs['appForm'].clearValidate()
@@ -194,7 +195,7 @@
             updateVersion(this.selectApp).then(response => {
               if (response.data) {
                 this.dialogFormVisible = false;
-                this.appData.splice(this.selectIndex, 1, this.selectApp);
+                updateTable(this.appData, this.selectApp, 'versionId');
                 this.$message({
                   type: "success",
                   message: "编辑成功!"
@@ -209,6 +210,7 @@
       }
     }
   };
+
 </script>
 
 <style lang="scss">
@@ -217,4 +219,5 @@
   .table_container {
     padding: 20px;
   }
+
 </style>

@@ -6,7 +6,11 @@
         <el-table-column property="loginName" label="用户名" width="120"></el-table-column>
         <el-table-column property="password" label="密码" width="120"></el-table-column>
         <el-table-column property="nick" label="别名" width="120"></el-table-column>
-        <el-table-column property="authority" label="权限" width="100"></el-table-column>
+        <el-table-column property="authority" label="权限" width="100">
+          <template slot-scope="scope">
+            <span>{{formatAuthority(scope.row.authority)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column property="phone" label="手机号" width="150"></el-table-column>
         <el-table-column property="registerTime" label="注册时间" width="160" sortable>
           <template slot-scope="scope">
@@ -77,7 +81,8 @@
     isEmpty
   } from '@/utils/validate'
   import {
-    formatDate
+    formatDate,
+    updateTable
   } from '@/utils/index'
   import Pagination from '@/components/Pagination' // secondary package based on el-pagination
   export default {
@@ -110,7 +115,6 @@
           }]
         },
         selectAccount: {},
-        selectIndex: 0,
         dialogFormVisible: false,
         loading: true,
         total: 0,
@@ -134,6 +138,16 @@
           }
         })
       },
+      formatAuthority(authority) {
+        switch (authority) {
+          case 'admin':
+            return "管理员";
+          case 'editor':
+            return "普通用户";
+          default:
+            return "未知";
+        }
+      },
       changeDateFormat(registerTime) {
         if (isEmpty(registerTime)) {
           return registerTime;
@@ -142,7 +156,6 @@
       },
       handleEdit(index, row) {
         this.selectAccount = Object.assign({}, row) // copy obj
-        this.selectIndex = index;
         this.dialogFormVisible = true;
         this.$nextTick(() => {
           this.$refs['userForm'].clearValidate()
@@ -173,7 +186,7 @@
             updateAccount(this.selectAccount).then(response => {
               if (response.data) {
                 this.dialogFormVisible = false;
-                this.accountData.splice(this.selectIndex, 1, this.selectAccount);
+                updateTable(this.accountData, this.selectAccount, 'accountId');
                 this.$message({
                   type: "success",
                   message: "编辑成功!"

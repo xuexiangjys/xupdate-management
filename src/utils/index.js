@@ -138,3 +138,20 @@ export function formatDate(date, fmt) {
 function padLeftZero(str) {
   return ('00' + str).substring(str.length);
 }
+
+/**
+ * 解决排序后数据错乱导致列表数据更新出错的问题
+ * @param {tableData} 列表数据数据
+ * @returns {selectData} 需要替换的数据
+ * @returns {idName} id名
+ */
+export function updateTable(tableData, selectData, idName) {
+  for (const v of tableData) {
+    if (v[idName] === selectData[idName]) {
+      const index = tableData.indexOf(v)
+      tableData.splice(index, 1, selectData)
+      break
+    }
+  }
+}
+ 
