@@ -8,7 +8,7 @@
         <el-table-column property="nick" label="别名" width="120"></el-table-column>
         <el-table-column property="authority" label="权限" width="100"></el-table-column>
         <el-table-column property="phone" label="手机号" width="150"></el-table-column>
-        <el-table-column property="registerTime" label="注册时间" width="130" sortable>
+        <el-table-column property="registerTime" label="注册时间" width="160" sortable>
           <template slot-scope="scope">
             <span>{{changeDateFormat(scope.row.registerTime)}}</span>
           </template>
@@ -50,8 +50,8 @@
             </el-input>
           </el-form-item>
           <el-form-item label="注册时间" prop="registerTime">
-            <el-date-picker v-model="selectAccountRegisterTime" align="right" type="date" placeholder="选择日期"
-              value-format="yyyy-MM-dd">
+            <el-date-picker v-model="selectAccount.registerTime" align="right" type="datetime" placeholder="选择注册时间"
+              value-format="timestamp">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="地址" prop="address">
@@ -76,6 +76,9 @@
   import {
     isEmpty
   } from '@/utils/validate'
+  import {
+    formatDate
+  } from '@/utils/index'
   import Pagination from '@/components/Pagination' // secondary package based on el-pagination
   export default {
     components: {
@@ -108,7 +111,6 @@
         },
         selectAccount: {},
         selectIndex: 0,
-        selectAccountRegisterTime: "",
         dialogFormVisible: false,
         loading: true,
         total: 0,
@@ -136,22 +138,10 @@
         if (isEmpty(registerTime)) {
           return registerTime;
         }
-        var date = new Date(registerTime);
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
-
-        if (month < 10) {
-          month = "0" + month;
-        }
-        if (day < 10) {
-          day = "0" + day;
-        }
-        return (date.getFullYear() + "-" + month +
-          "-" + day);
+        return formatDate(new Date(registerTime), "yyyy-MM-dd HH:mm:ss");
       },
       handleEdit(index, row) {
         this.selectAccount = Object.assign({}, row) // copy obj
-        this.selectAccountRegisterTime = this.changeDateFormat(row.registerTime);
         this.selectIndex = index;
         this.dialogFormVisible = true;
         this.$nextTick(() => {
@@ -180,9 +170,7 @@
       updateInfo() {
         this.$refs['userForm'].validate(valid => {
           if (valid) {
-            const accountInfo = Object.assign({}, this.selectAccount)
-            accountInfo.registerTime = new Date(this.selectAccountRegisterTime).getTime();
-            updateAccount(accountInfo).then(response => {
+            updateAccount(this.selectAccount).then(response => {
               if (response.data) {
                 this.dialogFormVisible = false;
                 this.accountData.splice(this.selectIndex, 1, this.selectAccount);
@@ -200,6 +188,7 @@
       }
     }
   };
+
 </script>
 
 <style lang="scss">
@@ -208,4 +197,5 @@
   .table_container {
     padding: 20px;
   }
+
 </style>
