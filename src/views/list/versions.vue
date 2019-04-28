@@ -81,7 +81,8 @@
     isEmpty
   } from '@/utils/validate'
   import {
-    updateTable
+    updateTableItem,
+    deleteTableItem
   } from '@/utils/index'
   import Pagination from '@/components/Pagination' // secondary package based on el-pagination
   export default {
@@ -179,7 +180,7 @@
           .then(() => {
             deleteVersion(row).then(response => {
               if (response.data) {
-                this.appData.splice(index, 1);
+                deleteTableItem(this.appData, row, 'versionId');
                 this.$message({
                   type: "success",
                   message: "删除成功!"
@@ -195,7 +196,7 @@
             updateVersion(this.selectApp).then(response => {
               if (response.data) {
                 this.dialogFormVisible = false;
-                updateTable(this.appData, this.selectApp, 'versionId');
+                updateTableItem(this.appData, this.selectApp, 'versionId');
                 this.$message({
                   type: "success",
                   message: "编辑成功!"

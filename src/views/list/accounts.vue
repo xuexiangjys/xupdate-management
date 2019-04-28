@@ -82,7 +82,8 @@
   } from '@/utils/validate'
   import {
     formatDate,
-    updateTable
+    updateTableItem,
+    deleteTableItem
   } from '@/utils/index'
   import Pagination from '@/components/Pagination' // secondary package based on el-pagination
   export default {
@@ -170,7 +171,7 @@
           .then(() => {
             deleteAccount(row).then(response => {
               if (response.data) {
-                this.accountData.splice(index, 1);
+                deleteTableItem(this.accountData, row, 'accountId');
                 this.$message({
                   type: "success",
                   message: "删除成功!"
@@ -186,7 +187,7 @@
             updateAccount(this.selectAccount).then(response => {
               if (response.data) {
                 this.dialogFormVisible = false;
-                updateTable(this.accountData, this.selectAccount, 'accountId');
+                updateTableItem(this.accountData, this.selectAccount, 'accountId');
                 this.$message({
                   type: "success",
                   message: "编辑成功!"
