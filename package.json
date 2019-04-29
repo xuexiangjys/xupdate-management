@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "axios": "0.18.0",
+    "driver.js": "^0.9.5",
     "element-ui": "2.7.2",
     "js-cookie": "2.2.0",
     "normalize.css": "7.0.0",

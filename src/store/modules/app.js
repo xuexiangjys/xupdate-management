@@ -5,7 +5,8 @@ const state = {
     opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
     withoutAnimation: false
   },
-  device: 'desktop'
+  device: 'desktop',
+  isFirstRun: Cookies.get('isFirstRun') ? Cookies.get('isFirstRun') : true
 }
 
 const mutations = {
@@ -25,6 +26,10 @@ const mutations = {
   },
   TOGGLE_DEVICE: (state, device) => {
     state.device = device
+  },
+  TOGGLE_FIRST_RUN: (state, isFirstRun) => {
+    state.isFirstRun = isFirstRun
+    Cookies.set('isFirstRun', isFirstRun)
   }
 }
 
@@ -45,6 +50,11 @@ const actions = {
     commit
   }, device) {
     commit('TOGGLE_DEVICE', device)
+  },
+  hasShowGuide({
+    commit
+  }) {
+    commit('TOGGLE_FIRST_RUN', false)
   }
 }
 
