@@ -14,6 +14,9 @@ npm run dev
 # preview for production at http://localhost:1111
 npm run preview
 
+# package
+npm run build:prod
+
 ```
 
 ## 界面预览
