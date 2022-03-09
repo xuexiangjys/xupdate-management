@@ -1,0 +1,11 @@
+version: '2'
+services:
+  love_heart:
+    ports:
+      - 8880:80
+    build:
+      context: ./
+    container_name: love_heart
+    restart: on-failure
+    environment:
+      - TZ=Asia/Shanghai

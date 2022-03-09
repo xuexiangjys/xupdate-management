@@ -29,8 +29,7 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: false
-    },
-    after: require('./mock/mock-server.js')
+    }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
@@ -64,15 +63,15 @@ module.exports = {
       .end()
 
     // set preserveWhitespace
-    config.module
-      .rule('vue')
-      .use('vue-loader')
-      .loader('vue-loader')
-      .tap(options => {
-        options.compilerOptions.preserveWhitespace = true
-        return options
-      })
-      .end()
+    // config.module
+    //   .rule('vue')
+    //   .use('vue-loader')
+    //   .loader('vue-loader')
+    //   .tap(options => {
+    //     options.compilerOptions.preserveWhitespace = true
+    //     return options
+    //   })
+    //   .end()
 
     config
     // https://webpack.js.org/configuration/devtool/#development
